@@ -1,28 +1,33 @@
-import iziToast from "izitoast";
+import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-import Container from "./components/Container/Container.jsx";
-import DeleteModal from "./components/DeleteModal/DeleteModal.jsx";
-import ModalWrapper from "./components/ModalWrapper/ModalWrapper.jsx";
-import MonthList from "./components/MonthList/MonthList.jsx";
-import UpdateModal from "./components/UpdateModal/UpdateModal.jsx";
-import { MONTH_NAMES } from "./data/monthData.js";
-import { useEffect, useRef, useState } from "react";
-import AddModal from "./components/AddModal/AddModal.jsx";
+import Container from './components/Container/Container.jsx';
+import DeleteModal from './components/DeleteModal/DeleteModal.jsx';
+import ModalWrapper from './components/ModalWrapper/ModalWrapper.jsx';
+import MonthList from './components/MonthList/MonthList.jsx';
+import UpdateModal from './components/UpdateModal/UpdateModal.jsx';
+import { MONTH_NAMES } from './data/monthData.js';
+import { useEffect, useRef, useState } from 'react';
+import AddModal from './components/AddModal/AddModal.jsx';
 import { v4 as uuidv4 } from 'uuid';
-import Footer from "./components/Footer/Footer.jsx";
-import Header from "./components/Header/Header.jsx";
-import SuccessAnimation from "./components/SuccessAnimation/SuccessAnimation.jsx";
+import Footer from './components/Footer/Footer.jsx';
+import Header from './components/Header/Header.jsx';
+import SuccessAnimation from './components/SuccessAnimation/SuccessAnimation.jsx';
+import { BG_DATA } from './data/bgData.js';
+import ThemeModal from './components/ThemeModal/ThemeModal.jsx';
 
 const App = () => {
-
   const [month, setMonth] = useState(() => {
     const saved = localStorage.getItem('month');
     return saved ? JSON.parse(saved) : MONTH_NAMES;
   });
 
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved ? JSON.parse(saved) : BG_DATA;
+  })
 
-
+  const [modalTheme, setModalTheme] = useState(false);
   const [modalAdd, setModalAdd] = useState(false);
   const [modalDeleteEl, setModalDeleteEl] = useState(false);
   const [modalUpdateEl, setModalUpdateEl] = useState(false);
@@ -30,95 +35,100 @@ const App = () => {
   const timer = useRef(null);
 
   const [savedMonthID, setSavedMonthID] = useState(0);
-  const [savedGoalID, setSavedGoalID] = useState("");
-  const [savedGoalTXT, setSavedGoalTXT] = useState("");
+  const [savedGoalID, setSavedGoalID] = useState('');
+  const [savedGoalTXT, setSavedGoalTXT] = useState('');
 
   useEffect(() => {
     localStorage.setItem('month', JSON.stringify(month));
   }, [month]);
 
   useEffect(() => {
+    localStorage.setItem('theme', JSON.stringify(theme));
+  }, [theme]);
+
+  useEffect(() => {
     if (!successAnimation) {
-      clearTimeout(timer.current)
-      return
+      clearTimeout(timer.current);
+      return;
     }
     timer.current = setTimeout(() => {
-      setSuccessAnimation(false)
-    }, 3000)
+      setSuccessAnimation(false);
+    }, 3000);
 
     return () => {
-      clearTimeout(timer.current)
-    }
-  }, [successAnimation])
+      clearTimeout(timer.current);
+    };
+  }, [successAnimation]);
 
   //!DELETE
   const handleDeleteGoal = (month_id, goal_id) => {
-    setModalDeleteEl(true)
-    setSavedMonthID(month_id)
-    setSavedGoalID(goal_id)
+    setModalDeleteEl(true);
+    setSavedMonthID(month_id);
+    setSavedGoalID(goal_id);
   };
   const handleDeleteGoalYes = () => {
-    setMonth(prev =>
-      prev.map(month =>
+    setMonth((prev) =>
+      prev.map((month) =>
         month.id === savedMonthID
           ? {
             ...month,
-            data: month.data.filter(goal => goal.goal_id !== savedGoalID),
+            data: month.data.filter((goal) => goal.goal_id !== savedGoalID),
           }
-          : month
-      )
+          : month,
+      ),
     );
     setModalDeleteEl(false);
-    setSavedMonthID(0)
-    setSavedGoalID("")
+    setSavedMonthID(0);
+    setSavedGoalID('');
 
     iziToast.success({
       title: 'Success',
       message: 'Goal has been deleted.',
       timeout: 3000,
     });
-  }
+  };
   const handleDeleteGoalNo = () => {
     setModalDeleteEl(false);
-    setSavedMonthID(0)
-    setSavedGoalID("")
-  }
+    setSavedMonthID(0);
+    setSavedGoalID('');
+  };
 
   //!DONE
   const handleDoneGoal = (month_id, goal_id, status) => {
-    setMonth(prev =>
-      prev.map(month =>
+    setMonth((prev) =>
+      prev.map((month) =>
         month.id === month_id
           ? {
             ...month,
-            data: month.data.map(goal => {
-              return goal.goal_id === goal_id ? {
-                ...goal,
-                goal_status: !status
-              } : goal
+            data: month.data.map((goal) => {
+              return goal.goal_id === goal_id
+                ? {
+                  ...goal,
+                  goal_status: !status,
+                }
+                : goal;
             }),
           }
-          : month
-      )
+          : month,
+      ),
     );
     if (!status) {
-      setSuccessAnimation(true)
+      setSuccessAnimation(true);
       iziToast.success({
         title: 'Success',
         message: 'Goal has been completed.',
         timeout: 3000,
       });
     }
-
-  }
+  };
 
   //! UPDATE
   const handleUpdateGoal = (month_id, goal_id, goal_txt) => {
-    setModalUpdateEl(true)
+    setModalUpdateEl(true);
     setSavedMonthID(month_id);
     setSavedGoalID(goal_id);
     setSavedGoalTXT(goal_txt);
-  }
+  };
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
     const value = e.target.elements.txt.value.trim();
@@ -139,7 +149,7 @@ const App = () => {
       });
       return;
     }
-    if (!value.replace(/[^\p{L}\p{N}\s,-]/gu, "")) {
+    if (!value.replace(/[^\p{L}\p{N}\s,-]/gu, '')) {
       iziToast.warning({
         title: 'Invalid characters',
         message: 'The goal contains only invalid symbols.',
@@ -156,19 +166,19 @@ const App = () => {
       return;
     }
 
-    setMonth(prev =>
-      prev.map(month =>
+    setMonth((prev) =>
+      prev.map((month) =>
         month.id === savedMonthID
           ? {
             ...month,
-            data: month.data.map(goal =>
+            data: month.data.map((goal) =>
               goal.goal_id === savedGoalID
                 ? { ...goal, goal_txt: value }
-                : goal
+                : goal,
             ),
           }
-          : month
-      )
+          : month,
+      ),
     );
     e.target.reset();
     setModalUpdateEl(false);
@@ -179,13 +189,11 @@ const App = () => {
     });
   };
 
-
   //!ADD
-
   const handleAddGoal = (month_id) => {
     setModalAdd(true);
     setSavedMonthID(month_id);
-  }
+  };
 
   const handleSubmitAdd = (e) => {
     e.preventDefault();
@@ -199,7 +207,7 @@ const App = () => {
       });
       return;
     }
-    if (!value.replace(/[^\p{L}\p{N}\s,-]/gu, "")) {
+    if (!value.replace(/[^\p{L}\p{N}\s,-]/gu, '')) {
       iziToast.warning({
         title: 'Invalid characters',
         message: 'The goal contains only invalid symbols.',
@@ -216,8 +224,8 @@ const App = () => {
       return;
     }
 
-    setMonth(prev =>
-      prev.map(month =>
+    setMonth((prev) =>
+      prev.map((month) =>
         month.id === savedMonthID
           ? {
             ...month,
@@ -230,8 +238,8 @@ const App = () => {
               },
             ],
           }
-          : month
-      )
+          : month,
+      ),
     );
 
     e.target.reset();
@@ -241,29 +249,54 @@ const App = () => {
       message: 'Goal has been added.',
       timeout: 3000,
     });
+  };
+
+  const handleChangeTheme = (innerID) => {
+    setTheme(prev => {
+      return prev.map((item) => {
+        return item.id === innerID ? { ...item, status: true } : { ...item, status: false }
+      })
+    })
   }
 
   return (
     <>
-      <Header />
+      <Header setModalTheme={setModalTheme} />
       <Container>
-        <MonthList month={month} handleAddGoal={handleAddGoal} handleDeleteGoal={handleDeleteGoal} handleDoneGoal={handleDoneGoal} onOpenUpdate={handleUpdateGoal} />
+        <MonthList
+          month={month}
+          theme={theme}
+          setMonth={setMonth}
+          handleAddGoal={handleAddGoal}
+          handleDeleteGoal={handleDeleteGoal}
+          handleDoneGoal={handleDoneGoal}
+          onOpenUpdate={handleUpdateGoal}
+        />
       </Container>
       <Footer />
-      <ModalWrapper setModal={setModalAdd} modal={modalAdd}>
-        <AddModal handleSubmitAdd={handleSubmitAdd} />
-      </ModalWrapper>
-      <ModalWrapper setModal={setModalDeleteEl} modal={modalDeleteEl}>
-        <DeleteModal handleDeleteGoalYes={handleDeleteGoalYes} handleDeleteGoalNo={handleDeleteGoalNo} />
-      </ModalWrapper>
-
-      <ModalWrapper setModal={setModalUpdateEl} modal={modalUpdateEl}>
-        <UpdateModal handleUpdateSubmit={handleUpdateSubmit} savedGoalTXT={savedGoalTXT} />
-      </ModalWrapper>
+      <>
+        <ModalWrapper setModal={setModalAdd} modal={modalAdd}>
+          <AddModal handleSubmitAdd={handleSubmitAdd} />
+        </ModalWrapper>
+        <ModalWrapper setModal={setModalDeleteEl} modal={modalDeleteEl}>
+          <DeleteModal
+            handleDeleteGoalYes={handleDeleteGoalYes}
+            handleDeleteGoalNo={handleDeleteGoalNo}
+          />
+        </ModalWrapper>
+        <ModalWrapper setModal={setModalUpdateEl} modal={modalUpdateEl}>
+          <UpdateModal
+            handleUpdateSubmit={handleUpdateSubmit}
+            savedGoalTXT={savedGoalTXT}
+          />
+        </ModalWrapper>
+        <ModalWrapper setModal={setModalTheme} modal={modalTheme}>
+          <ThemeModal theme={theme} handleChangeTheme={handleChangeTheme} />
+        </ModalWrapper>
+      </>
       {successAnimation && <SuccessAnimation />}
     </>
+  );
+};
 
-  )
-}
-
-export default App
+export default App;

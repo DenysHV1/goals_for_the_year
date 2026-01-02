@@ -1,11 +1,7 @@
 .footer {
-  margin-top: 100px;
   padding: 24px 10px 16px;
   background-color: #0f172a;
   color: #cbd5f5;
-  @media screen and (max-width:768px){
-	margin-top: 60px;
-  }
 }
 
 .content {
