@@ -7,9 +7,12 @@ import ModalWrapper from "./components/ModalWrapper/ModalWrapper.jsx";
 import MonthList from "./components/MonthList/MonthList.jsx";
 import UpdateModal from "./components/UpdateModal/UpdateModal.jsx";
 import { MONTH_NAMES } from "./data/monthData.js";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddModal from "./components/AddModal/AddModal.jsx";
 import { v4 as uuidv4 } from 'uuid';
+import Footer from "./components/Footer/Footer.jsx";
+import Header from "./components/Header/Header.jsx";
+import SuccessAnimation from "./components/SuccessAnimation/SuccessAnimation.jsx";
 
 const App = () => {
 
@@ -18,19 +21,35 @@ const App = () => {
     return saved ? JSON.parse(saved) : MONTH_NAMES;
   });
 
-  useEffect(() => {
-    localStorage.setItem('month', JSON.stringify(month));
-  }, [month]);
-
 
 
   const [modalAdd, setModalAdd] = useState(false);
   const [modalDeleteEl, setModalDeleteEl] = useState(false);
   const [modalUpdateEl, setModalUpdateEl] = useState(false);
+  const [successAnimation, setSuccessAnimation] = useState(false);
+  const timer = useRef(null);
 
   const [savedMonthID, setSavedMonthID] = useState(0);
   const [savedGoalID, setSavedGoalID] = useState("");
   const [savedGoalTXT, setSavedGoalTXT] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem('month', JSON.stringify(month));
+  }, [month]);
+
+  useEffect(() => {
+    if (!successAnimation) {
+      clearTimeout(timer.current)
+      return
+    }
+    timer.current = setTimeout(() => {
+      setSuccessAnimation(false)
+    }, 3000)
+
+    return () => {
+      clearTimeout(timer.current)
+    }
+  }, [successAnimation])
 
   //!DELETE
   const handleDeleteGoal = (month_id, goal_id) => {
@@ -83,6 +102,7 @@ const App = () => {
       )
     );
     if (!status) {
+      setSuccessAnimation(true)
       iziToast.success({
         title: 'Success',
         message: 'Goal has been completed.',
@@ -225,10 +245,11 @@ const App = () => {
 
   return (
     <>
+      <Header />
       <Container>
         <MonthList month={month} handleAddGoal={handleAddGoal} handleDeleteGoal={handleDeleteGoal} handleDoneGoal={handleDoneGoal} onOpenUpdate={handleUpdateGoal} />
       </Container>
-
+      <Footer />
       <ModalWrapper setModal={setModalAdd} modal={modalAdd}>
         <AddModal handleSubmitAdd={handleSubmitAdd} />
       </ModalWrapper>
@@ -239,6 +260,7 @@ const App = () => {
       <ModalWrapper setModal={setModalUpdateEl} modal={modalUpdateEl}>
         <UpdateModal handleUpdateSubmit={handleUpdateSubmit} savedGoalTXT={savedGoalTXT} />
       </ModalWrapper>
+      {successAnimation && <SuccessAnimation />}
     </>
 
   )

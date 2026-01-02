@@ -1,0 +1,61 @@
+.footer {
+  margin-top: 100px;
+  padding: 24px 10px 16px;
+  background-color: #0f172a;
+  color: #cbd5f5;
+  @media screen and (max-width:768px){
+	margin-top: 60px;
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.link {
+  font-size: 22px;
+  color: #cbd5f5;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.link:hover {
+  color: #38bdf8; /* sky-400 */
+  transform: translateY(-2px);
+}
+
+.copyright {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+  font-size: 14px;
+  color: #94a3b8; /* slate-400 */
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .content {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
