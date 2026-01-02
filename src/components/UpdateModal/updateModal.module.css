@@ -1,0 +1,130 @@
+.box{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+}
+
+.title{
+	font-family: "Tagesschrift", system-ui;
+  color: #1f2937;
+  font-size: 25px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.form{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	gap: 10px;
+}
+
+.input{
+	width: 100%;
+	height: 105px;
+	border: 2px solid #1f2937;
+	border-radius: 20px;
+	color: #1f2937;
+	padding: 10px 10px;
+}
+
+.btn {
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1f2937;
+  border: 1px solid #fff;
+  border-radius: 20px;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  transition: box-shadow 350ms ease, transform 350ms ease,
+    background-color 350ms ease;
+}
+
+.btn:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+  transform: scale(1.02);
+  background-color: #7575756b;
+}
+
+.last_txt_box{
+  border: 2px solid #1f2937;
+	border-radius: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+.last_txt_box div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.last_txt_box div h4 {
+  font-family: "Tagesschrift", system-ui;
+  color: #1f2937;
+  margin-bottom: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+
+
+.copy {
+padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1f2937;
+  border: 1px solid #fff;
+  border-radius: 20px;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  transition: box-shadow 350ms ease, transform 350ms ease,
+    background-color 350ms ease;
+}
+
+
+.copy:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+  transform: scale(1.02);
+  background-color: #7575756b;
+}
+
+.copy.is_copied {
+  background-color: #1f293775;
+  opacity: 0.5;
+}
+
+.last_txt_box p {
+  color: #1f2937;
+  word-break: break-all;
+}

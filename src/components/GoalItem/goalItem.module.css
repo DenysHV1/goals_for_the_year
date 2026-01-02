@@ -133,3 +133,11 @@
 .btn:active {
   transform: scale(0.95);
 }
+
+
+.left_info{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #1f293753;
+}
